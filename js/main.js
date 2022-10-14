@@ -10,10 +10,14 @@ const main = (time) => {
     window.requestAnimationFrame(main)
     const deltaTime = (time - prevTime) / 1000
     if (deltaTime < 1 / SNAKE_SPEED) return
+    console.log(1 / deltaTime)
 
     update()
     render()
-    prevTime = time
+
+    // Set prevTime but adjust for deltaTime not being a multiple of (1000 / SNAKE_SPEED)
+    // which is the fps interval for the game.
+    prevTime = time - (deltaTime % (1000 / SNAKE_SPEED))
 }
 
 const render = () => {
