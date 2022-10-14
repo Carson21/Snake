@@ -11,8 +11,8 @@ const main = (time) => {
     const deltaTime = (time - prevTime) / 1000
     if (deltaTime < 1 / SNAKE_SPEED) return
 
-    render()
     update()
+    render()
     prevTime = time
 }
 

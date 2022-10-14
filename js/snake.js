@@ -1,6 +1,7 @@
 import LinkedList from "./linkedlist.js"
+import { getInputDirection } from "./input.js"
 
-export const SNAKE_SPEED = 3
+export const SNAKE_SPEED = 15
 export const SNAKE_SIZE = 6
 
 class Snake {
@@ -31,8 +32,10 @@ class Snake {
             node = node.prev
         }
 
-        this.snake.head.value.x -= 0
-        this.snake.head.value.y -= 1
+        let inputDirection = getInputDirection()
+
+        this.snake.head.value.x += inputDirection.x
+        this.snake.head.value.y += inputDirection.y
     }
 }
 
