@@ -2,12 +2,13 @@ import LinkedList from "./linkedlist.js"
 import { getInputDirection } from "./input.js"
 
 export const SNAKE_SPEED = 15
-export const SNAKE_SIZE = 20
+export const SNAKE_SIZE = 8
 
 class Snake {
     constructor(size) {
         this.size = size
         this.snake = new LinkedList({ x: 19, y: 14 })
+        this.newSegments = 0
 
         for (let i = 0; i < size - 1; i++) {
             this.snake.append({ x: 19, y: 15 + i })
@@ -28,13 +29,20 @@ class Snake {
 
     update(started) {
         if (!started) return
-        let node = this.snake.tail
         let dead
+        let node = this.snake.tail
+        let tailX = node.value.x
+        let tailY = node.value.y
 
         while (node != this.snake.head) {
             node.value.x = node.prev.value.x
             node.value.y = node.prev.value.y
             node = node.prev
+        }
+
+        if (this.newSegments > 0) {
+            this.snake.append({ x: tailX, y: tailY })
+            this.newSegments -= 1
         }
 
         let inputDirection = getInputDirection()
@@ -48,15 +56,23 @@ class Snake {
     }
 
     onSnake(position) {
-        position = { x: 0, y: 0 }
-        let headXY = this.snake.head.value
-        if (position.x == headXY.x && position.y == headXY.y) {
-            return true
-        } else {
-            return false
+        let node = this.snake.head
+        let onSnake = false
+        while (node != null) {
+            if (position.x == node.value.x && position.y == node.value.y) {
+                onSnake = true
+            }
+            node = node.next
         }
+
+        return onSnake
     }
 
+    addLength(num) {
+        this.newSegments += num
+    }
+
+    // Private Method
     #isDead() {
         let head = this.snake.head
         let node = this.snake.head.next
